@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                      
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+	  
+	  <h:head>
+	  	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+	  	<title>Sistema de Intecambio de Libros</title>
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/themePrime/primefaces.css" />  
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/themePrime/theme.css" /> 
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/themePrime/icon-theme.css" /> 
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/themePrime/fonts.css" /> 
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/themePrime/general-style.css" />  
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/themePrime/default.css" /> 	
+		<script type="text/javascript" src="#{request.contextPath}/resources/js/jquery.js"></script>	
+		<script type="text/javascript" src="#{request.contextPath}/resources/js/jquery.autoText-1.0.0.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/resources/js/jquery.autoNumeric-1.6.2.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/resources/js/ValidacionUtil.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/resources/js/funciones.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/resources/js/bootstrap.js">
+			$.noConflict();
+		</script>
+	  	
+	  	<h:outputText value="&lt;!--[if lt IE 9]&gt;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;#{request.contextPath}/resources/css/bootstrap-ie7.css&quot;/&gt;&lt;![endif]--&gt;"
+	  				  escape="false">
+	  	</h:outputText>	  	
+	  </h:head>
+	  <h:body style="background: rgb(247,247,247);">
+	  	<f:view>
+	  		<f:loadBundle basename="messages" var="m"></f:loadBundle>
+	  		<h:form id="formLogin">
+	  			<p:growl id="growl" life="5000"></p:growl>
+	  			<br /><br /><br /><br /><br /><br />
+	  			<div id="divPrincipalLogin">
+	  				<a class="hiddenanchor" id="toregister"></a>
+	  				<a class="hiddenanchor" id="tologin"></a>
+	  				
+	  				<div id="containerLogin">
+	  					<div id="divSuperiorLogin">
+	  						<h:panelGrid columns="1" style="width:100%" cellpadding="0" cellspacing="0">
+	  							<h:graphicImage url="./resources/themePrime/images/logotipo-bbva-small.png"></h:graphicImage>
+	  						</h:panelGrid>
+	  					</div>	
+	  					<div id="divCentralDerechoLogin">
+	  						<h:panelGrid columns="2" styleClass="centered2">
+	  							<h:outputLabel for="txtUsuario" 
+	  										   value="#{m.login_lbl_usuario}:" 
+	  										   styleClass="color-letra-azul">
+	  						    </h:outputLabel>
+	  							<h:inputText id="txtUsuario"
+	  									     value="#{loginModel.usuario}"
+	  									     onchange="this.value=this.value.toUpperCase()"
+	  									     onblur="this.value=this.value.toUpperCase()"
+	  									     label="#{m.login_lbl_usuario}" 
+	  									     style="width:180px">
+	  							</h:inputText>
+	  							
+	  							<h:outputText value=""></h:outputText>
+	  							<h:outputText value=""></h:outputText>
+	  							
+	  							<h:outputLabel for="txtClave"
+	  										   value="#{m.login_lbl_clave}:">
+	  						    </h:outputLabel>
+	  						    
+	  						    <p:password id="txtClave"
+	  						    			value="#{loginModel.password}"
+	  						    			label="#{m.login_lbl_clave}"
+	  						    			style="width:180px">
+	  						    </p:password>
+	  						    
+	  							<h:outputText value=""></h:outputText>
+	  							<h:outputText value=""></h:outputText>	
+	  						</h:panelGrid>
+	  						<h:panelGrid columns="2" styleClass="centered2">
+	  							<p:commandButton id="ajax"
+	  										 	 value="Aceptar"
+	  										 	 action="#{loginController.iniciarSesion}"
+	  										 	 icon="ui-icon-check"
+	  										 	 update="growl">
+	  							</p:commandButton>
+	  							<p:commandButton id="Cancelar"
+	  											 value="Cancelar"
+	  											 icon="ui-icon-arrowreturnthick-1-w"
+	  											 onclick="window.close();">
+	  							</p:commandButton>
+	  						</h:panelGrid>
+	  						<h:panelGrid id="pnlMensaje">
+	  							<h:messages></h:messages>
+	  						</h:panelGrid>
+	  					</div>
+	  					<div style="clear:both;"></div>
+	  					<div id="divInferiorLogin">
+	  						<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"></p:messages>
+	  					</div>
+	  				</div>
+	  			</div>
+	  			
+	  			<!--  preloader -->
+	  			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"></p:ajaxStatus>
+	  			<p:dialog widgetVar="statusDialog"
+	  					  modal="true"
+	  					  draggable="false"
+	  					  closable="false"
+	  					  resizable="false"
+	  					  showHeader="false"
+	  					  >
+	  					  <p:graphicImage url="./resources/images/cargando.gif"></p:graphicImage>
+	  			</p:dialog>
+	  		</h:form>
+	  	</f:view>
+	  </h:body>
+</html>
